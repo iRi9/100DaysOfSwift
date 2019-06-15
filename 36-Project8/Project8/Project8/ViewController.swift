@@ -121,6 +121,10 @@ class ViewController: UIViewController {
                 let letterButton = UIButton(type: .system)
                 letterButton.titleLabel?.font = UIFont.systemFont(ofSize: 36)
                 
+                // create border botton challenge #1
+                letterButton.layer.borderWidth = 1
+                letterButton.layer.borderColor = UIColor.lightGray.cgColor
+                
                 // give the button some temporary text so we can see it on-screen
                 letterButton.setTitle("WWW", for: .normal)
                 letterButton.addTarget(self, action: #selector(letterTapped), for: .touchUpInside)
@@ -155,9 +159,8 @@ class ViewController: UIViewController {
     }
     
     @objc func submitTapped(_ sender: UIButton) {
-        print("submit")
         guard let answerText = currentAnswer.text else { return }
-        print(answerText)
+    
         if let solutionPosition = solutions.firstIndex(of: answerText) {
             activatedButtons.removeAll()
             
@@ -168,12 +171,23 @@ class ViewController: UIViewController {
             currentAnswer.text = ""
             score += 1
             
-            if score % 7 == 0 {
-                let ac = UIAlertController(title: "Well done!", message: "Are you ready for the next level?", preferredStyle: .alert)
-                ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
-                present(ac, animated: true)
+            checkRemainingButton()
+        } else {
+            // deduct point #challenge #3
+            currentAnswer.text = ""
+            if score > 0 {
+                score -= 1
             }
+            
+            // wrong answer alert challenge #2
+            let ac = UIAlertController(title: "Whoops...!", message: "Wrong answer", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: {(action) in
+                    self.checkRemainingButton()
+                })
+            )
+            present(ac, animated: true)
         }
+        
     }
     
     @objc func clearTapped(_ sender: UIButton) {
@@ -234,6 +248,14 @@ class ViewController: UIViewController {
         
         for btn in letterButtons {
             btn.isHidden = false
+        }
+    }
+    
+    func checkRemainingButton() {
+        if activatedButtons.count == 20 {
+            let ac = UIAlertController(title: "Well done!", message: "Are you ready for the next level?", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
+            present(ac, animated: true)
         }
     }
 
