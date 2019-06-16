@@ -20,19 +20,8 @@ class ViewController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action
             , target: self, action: #selector(shareTheApp))
         
-        let fm = FileManager.default
-        let path = Bundle.main.resourcePath!
-        let items = try! fm.contentsOfDirectory(atPath: path)
-        var tempPicture = [String]()
-        for item in items {
-            if item.hasPrefix("nssl") {
-                tempPicture.append(item)
-            }
-        }
+        performSelector(inBackground: #selector(fetchPicture), with: nil)
         
-        pictures = tempPicture.sorted();
-        
-//        print(pictures)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -61,6 +50,21 @@ class ViewController: UITableViewController {
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         
         present(vc,animated: true)
+    }
+    
+    @objc func fetchPicture() {
+        let fm = FileManager.default
+        let path = Bundle.main.resourcePath!
+        let items = try! fm.contentsOfDirectory(atPath: path)
+        var tempPicture = [String]()
+        for item in items {
+            if item.hasPrefix("nssl") {
+                tempPicture.append(item)
+            }
+        }
+        
+        pictures = tempPicture.sorted();
+        tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
     }
 }
 

@@ -126,7 +126,7 @@ class ViewController: UIViewController {
                 letterButton.layer.borderColor = UIColor.lightGray.cgColor
                 
                 // give the button some temporary text so we can see it on-screen
-                letterButton.setTitle("WWW", for: .normal)
+                letterButton.setTitle("", for: .normal)
                 letterButton.addTarget(self, action: #selector(letterTapped), for: .touchUpInside)
                 
                 // calculate the frame of this button using its column and row
@@ -145,7 +145,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadLevel()
+        performSelector(inBackground: #selector(loadLevel), with: nil)
     }
     
     @objc func letterTapped(_ sender: UIButton) {
@@ -200,7 +200,7 @@ class ViewController: UIViewController {
         activatedButtons.removeAll()
     }
     
-    func loadLevel() {
+    @objc func loadLevel() {
         var clueString = ""
         var solutionString = ""
         var letterBits = [String]()
@@ -228,23 +228,28 @@ class ViewController: UIViewController {
             }
         }
         
-        cluesLabel.text = clueString.trimmingCharacters(in: .whitespacesAndNewlines)
-        answerLabel.text = solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        letterBits.shuffle()
-        
-        if letterBits.count == letterButtons.count {
-            for i in 0 ..< letterButtons.count {
-                letterButtons[i].setTitle(letterBits[i], for: .normal)
+        DispatchQueue.main.async { [weak self] in
+            self?.cluesLabel.text = clueString.trimmingCharacters(in: .whitespacesAndNewlines)
+            self?.answerLabel.text = solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            letterBits.shuffle()
+            
+            if letterBits.count == self?.letterButtons.count {
+                if let letterButton = self?.letterButtons {
+                    for i in 0 ..< letterButton.count {
+                        self?.letterButtons[i].setTitle(letterBits[i], for: .normal)
+                    }
+                }
             }
         }
+        
     }
     
     func levelUp(action: UIAlertAction) {
         level += 1
         solutions.removeAll(keepingCapacity: true)
         
-        loadLevel()
+        performSelector(inBackground: #selector(loadLevel), with: nil)
         
         for btn in letterButtons {
             btn.isHidden = false
@@ -257,6 +262,10 @@ class ViewController: UIViewController {
             ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
             present(ac, animated: true)
         }
+    }
+    
+    @objc func updateUi(clue: String, solution: String, letter: [String]) {
+        
     }
 
 
