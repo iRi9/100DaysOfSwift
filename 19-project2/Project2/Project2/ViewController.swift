@@ -18,6 +18,9 @@ class ViewController: UIViewController {
     var correctAnswer = 0
     var totalQuestion = 0
     
+    let defaults = UserDefaults.standard
+    let key = "HIGHEST_SCORE"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,7 +61,7 @@ class ViewController: UIViewController {
         }
         
         countries.shuffle()
-        print("image 0 = \(countries[0]) image 1 = \(countries[1]) image 2 = \(countries[2]) ")
+        
         correctAnswer = Int.random(in: 0...2)
         
         button1.setImage(UIImage(named: countries[0]), for: .normal)
@@ -77,15 +80,14 @@ class ViewController: UIViewController {
         if sender.tag == correctAnswer {
             title = "Correct"
             score += 1
+            saveHighestScore(score)
         } else {
             title = "Wrong"
             score -= 1
         }
         
         let ac = UIAlertController(title: title, message: "Your score is \(score)", preferredStyle: .alert)
-        
         ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
-        
         present(ac,animated: true)
     }
     
@@ -95,6 +97,22 @@ class ViewController: UIViewController {
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         
         present(vc,animated: true)
+    }
+    
+    var firstTimeHighestScore: Bool = true
+    func saveHighestScore(_ score: Int) {
+        if score > defaults.integer(forKey: key) {
+            if firstTimeHighestScore {
+                firstTimeHighestScore = false
+//                let ac = UIAlertController(title: "Yuhuuu", message: "You beat the highest score", preferredStyle: .alert)
+//                let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+//                ac.addAction(action)
+//                present(ac, animated: true)
+                print("You have beated the score!")
+            }
+            
+            defaults.set(score, forKey: key)
+        }
     }
     
 
