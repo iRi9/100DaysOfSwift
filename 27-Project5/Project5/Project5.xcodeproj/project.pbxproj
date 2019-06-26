@@ -13,6 +13,7 @@
 		70B95D962297C9C200D9CE2B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70B95D952297C9C200D9CE2B /* Assets.xcassets */; };
 		70B95D992297C9C200D9CE2B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70B95D972297C9C200D9CE2B /* LaunchScreen.storyboard */; };
 		70B95DA12297CB6600D9CE2B /* start.txt in Resources */ = {isa = PBXBuildFile; fileRef = 70B95DA02297CB6600D9CE2B /* start.txt */; };
+		70C6808522C2F4E900ED617B /* Words.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C6808422C2F4E900ED617B /* Words.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		70B95D982297C9C200D9CE2B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		70B95D9A2297C9C200D9CE2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		70B95DA02297CB6600D9CE2B /* start.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = start.txt; sourceTree = "<group>"; };
+		70C6808422C2F4E900ED617B /* Words.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Words.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				70B95D972297C9C200D9CE2B /* LaunchScreen.storyboard */,
 				70B95D9A2297C9C200D9CE2B /* Info.plist */,
 				70B95DA02297CB6600D9CE2B /* start.txt */,
+				70C6808422C2F4E900ED617B /* Words.swift */,
 			);
 			path = Project5;
 			sourceTree = "<group>";
@@ -139,6 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70C6808522C2F4E900ED617B /* Words.swift in Sources */,
 				70B95D912297C9C000D9CE2B /* ViewController.swift in Sources */,
 				70B95D8F2297C9C000D9CE2B /* AppDelegate.swift in Sources */,
 			);

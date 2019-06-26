@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UITableViewController {
     
     var allWords = [String]()
-    var usedWords = [String]()
+    var usedWords = [Words]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +30,18 @@ class ViewController: UITableViewController {
             allWords = ["silkworm"]
         }
         
+        let defaults = UserDefaults.standard
+        
+        if let savedWord = defaults.object(forKey: "word") as? Data {
+            let jsonDecoder = JSONDecoder()
+            
+            do {
+                usedWords = try jsonDecoder.decode([Words].self, from: savedWord)
+            } catch {
+                print("Failed to load people")
+            }
+        }
+        
         startGame()
         
     }
@@ -46,7 +58,7 @@ class ViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Word", for: indexPath)
-        cell.textLabel?.text = usedWords[indexPath.row]
+        cell.textLabel?.text = usedWords[indexPath.row].word
         return cell
     }
     

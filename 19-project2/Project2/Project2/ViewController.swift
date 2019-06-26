@@ -12,14 +12,22 @@ class ViewController: UIViewController {
     @IBOutlet var button1: UIButton!
     @IBOutlet var button2: UIButton!
     @IBOutlet var button3: UIButton!
+    @IBOutlet var highestScoreLabel: UILabel!
     
     var countries = [String]()
     var score = 0
     var correctAnswer = 0
     var totalQuestion = 0
     
+    var highScore: Int = 0 {
+        didSet {
+            self.highestScoreLabel.text = "High Score : \(highScore)"
+        }
+    }
+    
     let defaults = UserDefaults.standard
     let key = "HIGHEST_SCORE"
+    var isBeatedHighestScore = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +54,8 @@ class ViewController: UIViewController {
         button1.layer.borderColor = UIColor.lightGray.cgColor
         button2.layer.borderColor = UIColor.lightGray.cgColor
         button3.layer.borderColor = UIColor.lightGray.cgColor
+        
+        highScore = defaults.integer(forKey: key)
         
         askQuestion()
     }
@@ -86,9 +96,16 @@ class ViewController: UIViewController {
             score -= 1
         }
         
-        let ac = UIAlertController(title: title, message: "Your score is \(score)", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
-        present(ac,animated: true)
+        if isBeatedHighestScore == 1 {
+            let ac = UIAlertController(title: "Yuhuuu", message: "You beated the highest score", preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default, handler: askQuestion)
+            ac.addAction(action)
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: title, message: "Your score is \(score)", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
+            present(ac,animated: true)
+        }
     }
     
     @objc func shareMyScore() {
@@ -99,20 +116,13 @@ class ViewController: UIViewController {
         present(vc,animated: true)
     }
     
-    var firstTimeHighestScore: Bool = true
     func saveHighestScore(_ score: Int) {
         if score > defaults.integer(forKey: key) {
-            if firstTimeHighestScore {
-                firstTimeHighestScore = false
-//                let ac = UIAlertController(title: "Yuhuuu", message: "You beat the highest score", preferredStyle: .alert)
-//                let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-//                ac.addAction(action)
-//                present(ac, animated: true)
-                print("You have beated the score!")
-            }
-            
+            isBeatedHighestScore += 1
             defaults.set(score, forKey: key)
+            highScore = score
         }
+        
     }
     
 
