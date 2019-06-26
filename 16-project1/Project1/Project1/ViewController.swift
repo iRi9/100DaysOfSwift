@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UITableViewController {
     var pictures = [String]()
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,10 +38,12 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        countView(key: "\(indexPath.row)")
         if let vc = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController {
             print(indexPath.row)
             vc.selectedImage = pictures[indexPath.row]
             vc.titleImage = "Picture \(indexPath.row+1) of \(pictures.count + 1)"
+            vc.counter = defaults.integer(forKey: "\(indexPath.row)")
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -65,6 +68,11 @@ class ViewController: UITableViewController {
         
         pictures = tempPicture.sorted();
         tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
+    }
+    
+    func countView(key: String) {
+        let lastView = defaults.integer(forKey: key)
+        defaults.set(lastView + 1, forKey: key)
     }
 }
 

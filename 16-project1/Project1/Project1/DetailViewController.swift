@@ -10,8 +10,11 @@ import UIKit
 
 class DetailViewController: UIViewController {
     @IBOutlet var ImageView: UIImageView!
+    @IBOutlet var viewCount: UILabel!
+    
     var selectedImage: String?
     var titleImage: String?
+    var counter: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +25,10 @@ class DetailViewController: UIViewController {
         // Do any additional setup after loading the view.
         if let imageToLoad = selectedImage {
             ImageView.image = UIImage(named: imageToLoad)
+        }
+        
+        if let totalView = counter {
+            viewCount.text = "Total view \(totalView)"
         }
     }
 

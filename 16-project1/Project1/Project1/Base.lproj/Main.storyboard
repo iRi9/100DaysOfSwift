@@ -59,18 +59,27 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IbD-KB-AtO">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JGd-JX-p21">
+                                <rect key="frame" x="323.5" y="798" width="50.5" height="24"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="IbD-KB-AtO" firstAttribute="leading" secondItem="tOh-xa-cEv" secondAttribute="leading" id="5OS-9E-cnS"/>
+                            <constraint firstItem="AOe-HU-WCy" firstAttribute="trailing" secondItem="JGd-JX-p21" secondAttribute="trailing" constant="40" id="Auz-Fh-zFQ"/>
                             <constraint firstItem="IbD-KB-AtO" firstAttribute="top" secondItem="tOh-xa-cEv" secondAttribute="top" id="GpZ-bl-6vb"/>
                             <constraint firstAttribute="bottom" secondItem="IbD-KB-AtO" secondAttribute="bottom" id="WFM-jZ-Hlz"/>
+                            <constraint firstItem="AOe-HU-WCy" firstAttribute="bottom" secondItem="JGd-JX-p21" secondAttribute="bottom" constant="40" id="w7n-dg-URN"/>
                             <constraint firstAttribute="trailing" secondItem="IbD-KB-AtO" secondAttribute="trailing" id="zPP-BH-a5r"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="AOe-HU-WCy"/>
                     </view>
                     <connections>
                         <outlet property="ImageView" destination="IbD-KB-AtO" id="5Tl-Oz-lul"/>
+                        <outlet property="viewCount" destination="JGd-JX-p21" id="a60-kC-Nss"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YVz-OH-IW7" userLabel="First Responder" sceneMemberID="firstResponder"/>
