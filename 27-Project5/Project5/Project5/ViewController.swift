@@ -30,19 +30,19 @@ class ViewController: UITableViewController {
             allWords = ["silkworm"]
         }
         
-        let defaults = UserDefaults.standard
+        startGame()
         
+        let defaults = UserDefaults.standard
         if let savedWord = defaults.object(forKey: "word") as? Data {
             let jsonDecoder = JSONDecoder()
-            
             do {
-                usedWords = try jsonDecoder.decode([Words].self, from: savedWord)
+                self.usedWords = try jsonDecoder.decode([Words].self, from: savedWord)
+                print(usedWords)
             } catch {
                 print("Failed to load people")
             }
         }
         
-        startGame()
         
     }
     
@@ -84,11 +84,11 @@ class ViewController: UITableViewController {
         if isPossibel(word: lowerAnswer) {
             if isOriginal(word: lowerAnswer) {
                 if isReal(word: lowerAnswer) {
-                    usedWords.insert(answer, at: 0)
-                    
+                    let word = Words(word: answer)
+                    usedWords.insert(word, at: 0)
                     let indexPath = IndexPath(row: 0, section: 0)
                     tableView.insertRows(at: [indexPath], with: .automatic)
-                    
+                    save()
                     return
                 } else {
                     errorTitle = "Word not recognized"
@@ -123,7 +123,13 @@ class ViewController: UITableViewController {
     }
     
     func isOriginal(word: String) -> Bool {
-        return !usedWords.contains(word)
+        for (_,value) in usedWords.enumerated() {
+            if value.word.contains(word) {
+                return false
+            }
+        }
+        return true
+//        return !usedWords.contains(word)
     }
     
     func isReal(word: String) -> Bool {
@@ -141,6 +147,17 @@ class ViewController: UITableViewController {
         let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         present(ac,animated: true)
+    }
+    
+    func save() {
+        print("save function usedWords = \(usedWords)")
+        let jsonEncoder = JSONEncoder()
+        if let savedData = try? jsonEncoder.encode(usedWords) {
+            let defaults = UserDefaults.standard
+            defaults.set(savedData, forKey: "word")
+        } else {
+            print("Failed to save people.")
+        }
     }
 
 }
