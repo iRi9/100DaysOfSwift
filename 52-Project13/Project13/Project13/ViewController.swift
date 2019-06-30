@@ -12,10 +12,20 @@ import UIKit
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var intensity: UISlider!
+    @IBOutlet var changeFilterBtn: UIButton!
     var currentImage: UIImage!
     
     var context: CIContext!
     var currentFilter: CIFilter!
+    
+    var selectedFilter: String? {
+        didSet {
+            guard let title = selectedFilter else {
+                return
+            }
+            changeFilterBtn.setTitle(title, for: .normal)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +34,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         context = CIContext()
         currentFilter = CIFilter(name: "CISepiaTone")
+        selectedFilter = currentFilter.name
         
     }
     
@@ -66,10 +77,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func setFilter(action: UIAlertAction) {
-        guard currentImage != nil else {return}
+        guard currentImage != nil else {
+            showError()
+            return
+        }
         guard let actionTitle = action.title else { return }
         
         currentFilter = CIFilter(name: actionTitle)
+        selectedFilter = currentFilter.name
         let beginImage = CIImage(image: currentImage)
         currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
         applyProcessing()
@@ -77,6 +92,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBAction func save(_ sender: Any) {
         guard let image = imageView.image else {
+            showError()
             return
         }
         UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
@@ -124,6 +140,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         
         
+    }
+    
+    func showError() {
+        let ac = UIAlertController(title: "Error", message: "No image", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
     }
     
 }
