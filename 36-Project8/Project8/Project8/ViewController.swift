@@ -155,7 +155,10 @@ class ViewController: UIViewController {
         
         currentAnswer.text = currentAnswer.text?.appending(buttonTitle)
         activatedButtons.append(sender)
-        sender.isHidden = true
+//        sender.isHidden = true
+        
+        // Challenge animation project 15
+        sender.alpha = 0
     }
     
     @objc func submitTapped(_ sender: UIButton) {
