@@ -126,6 +126,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if let cgImage = context.createCGImage(outputImage, from: outputImage.extent) {
             let processedImage = UIImage(cgImage: cgImage)
             imageView.image = processedImage
+            //Challenge animation project 15
+            imageView.alpha = 1
         }
     }
     
