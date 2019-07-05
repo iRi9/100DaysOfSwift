@@ -51,9 +51,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         dismiss(animated: true)
         
         currentImage = image
-        
         let beginImage = CIImage(image: currentImage)
         currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
+        
+        //Challenge animation project 15
+        UIView.animateKeyframes(withDuration: 1, delay: 0.1, options: [], animations: {
+            self.imageView.alpha = 1
+        })
+        
         applyProcessing()
     }
 
@@ -126,8 +131,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if let cgImage = context.createCGImage(outputImage, from: outputImage.extent) {
             let processedImage = UIImage(cgImage: cgImage)
             imageView.image = processedImage
-            //Challenge animation project 15
-            imageView.alpha = 1
         }
     }
     
