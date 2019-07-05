@@ -87,6 +87,18 @@ class ViewController: UIViewController {
     @IBAction func buttonTapped(_ sender: UIButton) {
         var title: String
         
+        /*
+         * Challenge animate flag when tapped
+         * Project 15
+         */
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 5, options: [], animations: {
+            sender.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        }) { finished in
+            sender.transform = .identity
+        }
+        
+        
+        
         if sender.tag == correctAnswer {
             title = "Correct"
             score += 1
