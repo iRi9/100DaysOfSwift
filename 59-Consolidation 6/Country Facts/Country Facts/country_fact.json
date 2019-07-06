@@ -1,0 +1,44 @@
+{
+    "results": [
+        {
+            "name": "Indonesia",
+            "facts": [
+                "Indonesia covers a lot of ground",
+                "Indonesia is made up of 18.307 islands",
+                "Indonesia has 139 volcanoes"
+            ]
+        },
+        {
+            "name": "Malaysia",
+            "facts": [
+                "Malaysia has largest cave chamber in the world",
+                "Twin Tower in Malaysia is the tallest in the world",
+                "Home to Cobras"
+            ]
+        },
+        {
+            "name": "Singapore",
+            "facts": [
+                "Singapore is conquering Asia sand by sand",
+                "Caning is actually still a legal form of punishment in Singapore.",
+                "Car lovers are almost broke in Singapore."
+            ]
+        },
+        {
+            "name": "Thailand",
+            "facts": [
+                "Thailand was never colonised",
+                "Thailand is a Buddhist country",
+                "The food is amazing"
+            ]
+        },
+        {
+            "name": "Philippines",
+            "facts": [
+                "Philippines has more than 7500 island to explore",
+                "Biggest coconut producer",
+                "Filipinos are epic at karaoke"
+            ]
+        }
+    ]
+}
