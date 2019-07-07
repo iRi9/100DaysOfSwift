@@ -15,6 +15,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(chooseMapType))
+        
         let london = Capital(title: "London", coordinate: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), info: "Home to the 2012 Summer Olympics.")
         let oslo = Capital(title: "Oslo", coordinate: CLLocationCoordinate2D(latitude: 59.95, longitude: 10.75), info: "Founded over a thousand years ago.")
         let paris = Capital(title: "Paris", coordinate: CLLocationCoordinate2D(latitude: 48.8567, longitude: 2.3508), info: "Often called the City of Light.")
@@ -37,6 +39,10 @@ class ViewController: UIViewController, MKMapViewDelegate {
             annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             annotationView?.canShowCallout = true
             
+            if let pin = annotationView as? MKPinAnnotationView {
+                pin.pinTintColor = .green
+            }
+            
             let btn = UIButton(type: .detailDisclosure)
             annotationView?.rightCalloutAccessoryView = btn
         } else {
@@ -50,11 +56,44 @@ class ViewController: UIViewController, MKMapViewDelegate {
         guard let capital = view.annotation as? Capital else { return }
         
         let placeName = capital.title
-        let placeInfo = capital.info
+//        let placeInfo = capital.info
         
-        let ac = UIAlertController(title: placeName, message: placeInfo, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
+//        let ac = UIAlertController(title: placeName, message: placeInfo, preferredStyle: .alert)
+//        ac.addAction(UIAlertAction(title: "OK", style: .default))
+//
+//        present(ac, animated: true)
         
+        if let vc = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController {
+            vc.cityName = placeName
+            navigationController?.pushViewController(vc, animated: true)
+        }
+        
+    }
+    
+    @objc func chooseMapType() {
+        let mapTypes = ["standard","satellite","hybrid","satelliteFlyover","hybridFlyover","mutedStandard"]
+        let ac = UIAlertController(title: "Choose map type", message: nil, preferredStyle: .actionSheet)
+        
+        for tipe in mapTypes {
+            ac.addAction(UIAlertAction(title: tipe, style: .default) { action in
+                switch tipe {
+                case "standard":
+                    self.mapView.mapType = MKMapType.standard
+                case "satellite":
+                    self.mapView.mapType = MKMapType.satellite
+                case "hybrid":
+                    self.mapView.mapType = MKMapType.hybrid
+                case "satelliteFlyover":
+                    self.mapView.mapType = MKMapType.satelliteFlyover
+                case "hybridFlayover":
+                    self.mapView.mapType = MKMapType.hybridFlyover
+                case "mutedStandard":
+                    self.mapView.mapType = MKMapType.mutedStandard
+                default:
+                    self.mapView.mapType = MKMapType.standard
+                }
+            })
+        }
         present(ac, animated: true)
     }
 
