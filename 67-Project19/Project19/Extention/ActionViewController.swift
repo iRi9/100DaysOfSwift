@@ -20,6 +20,9 @@ class ActionViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(chooseScript))
+        
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
@@ -67,6 +70,19 @@ class ActionViewController: UIViewController {
         
         let selectedRange = script.selectedRange
         script.scrollRangeToVisible(selectedRange)
+    }
+    
+    @objc func chooseScript() {
+        let ac = UIAlertController(title: "Script Lists", message: nil, preferredStyle: .actionSheet)
+        
+        ac.addAction(UIAlertAction(title: "Alert site name", style: .default) { [weak self] _ in
+            self?.script.text = "alert(document.title);"
+        })
+        
+        ac.addAction(UIAlertAction(title: "Edit Mode", style: .default) { [weak self] _ in
+            self?.script.text = "javascript:document.body.contentEditable = 'true'; document.designMode='on'; void 0"
+        })
+        present(ac, animated: true)
     }
 
 }
