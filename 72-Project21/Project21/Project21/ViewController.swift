@@ -32,7 +32,7 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate {
     }
     
     @objc func scheduleLocal() {
-        registerLocal()
+        registerCategories()
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests()
         
@@ -65,25 +65,37 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate {
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        // pull out the buried userInfo dictionary
         let userInfo = response.notification.request.content.userInfo
         
         if let customData = userInfo["customData"] as? String {
-            print("Custom data received : \(customData)")
+            print("Custom data received: \(customData)")
             
             switch response.actionIdentifier {
             case UNNotificationDefaultActionIdentifier:
-                //user swipe to unlock
-                print("default identifire")
+                // the user swiped to unlock
+                print("Default identifier")
+                showAction(message: "Default identifier")
+                
             case "show":
-                //show more information
-                print("show more information")
+                // the user tapped our "show more info…" button
+                print("Show more information…")
+                showAction(message: "Show more information…")
                 
             default:
                 break
             }
         }
         
+        // you must call the completion handler when you're done
         completionHandler()
+    }
+    
+    func showAction(message: String) {
+        let ac = UIAlertController(title: "Action Identifier", message: message, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Ok", style: .default))
+        
+        present(ac, animated: true)
     }
 
 
