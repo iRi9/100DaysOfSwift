@@ -45,6 +45,8 @@ class GameScene: SKScene {
     
     var isGameEnded = false
     
+    var gameOver: SKLabelNode!
+    
     override func didMove(to view: SKView) {
         let background = SKSpriteNode(imageNamed: "sliceBackground")
         background.position = CGPoint(x: 512, y: 384)
@@ -90,6 +92,17 @@ class GameScene: SKScene {
             
             livesImages.append(spriteNode)
         }
+    }
+    
+    func createGameOver() {
+        gameOver = SKLabelNode(fontNamed: "Chalkduster")
+        gameOver.horizontalAlignmentMode = .left
+        gameOver.fontSize = 48
+        gameOver.text = "Game Over"
+        addChild(gameOver)
+        
+        gameOver.position = CGPoint(x: 330, y: 384)
+        
     }
     
     func createSlices() {
@@ -204,6 +217,7 @@ class GameScene: SKScene {
     
     func endGame(triggeredByBomb: Bool) {
         if isGameEnded {
+            createGameOver()
             return
         }
         
@@ -219,6 +233,7 @@ class GameScene: SKScene {
             livesImages[1].texture = SKTexture(imageNamed: "sliceLifeGone")
             livesImages[2].texture = SKTexture(imageNamed: "sliceLifeGone")
         }
+        createGameOver()
     }
     
     func playSwooshSound() {
