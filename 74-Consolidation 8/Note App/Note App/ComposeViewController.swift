@@ -16,9 +16,7 @@ class ComposeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationController?.navigationBar.prefersLargeTitles = false
-
+        navigationItem.largeTitleDisplayMode = .never
         guard let composeNote = note else { return }
         composeTextView.text = composeNote
     }
