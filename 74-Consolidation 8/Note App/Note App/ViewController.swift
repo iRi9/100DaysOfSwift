@@ -39,18 +39,17 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showComposeVC()
+        showComposeVC(indexPath.row)
         
     }
     
     @objc func composeNote() {
-        showComposeVC()
+        showComposeVC(nil)
     }
     
-    func showComposeVC() {
+    func showComposeVC(_ index: Int?) {
         if let vc = storyboard?.instantiateViewController(withIdentifier: "Compose") as? ComposeViewController {
-            vc.note = "Hai.... "
-            
+            vc.index = index
             navigationController?.pushViewController(vc, animated: true)
         }
     }
