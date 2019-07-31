@@ -8,9 +8,11 @@
 
 import UIKit
 
-class ViewController: UITableViewController {
+class ViewController: UITableViewController, UISearchResultsUpdating {
     
     var noteManager = NoteManager()
+    var searchController = UISearchController()
+    var filteredData = [Note]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,15 +26,35 @@ class ViewController: UITableViewController {
         toolbarItems = [spacer, compose]
         navigationController?.isToolbarHidden = false
         
+        searchController = ({
+            let controller = UISearchController(searchResultsController: nil)
+            controller.searchResultsUpdater = self
+            controller.dimsBackgroundDuringPresentation = false
+            controller.searchBar.sizeToFit()
+            controller.searchBar.backgroundColor = UIColor.white
+            
+            tableView.tableHeaderView = controller.searchBar
+            
+            return controller
+        })()
+        
+        tableView.reloadData()
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.isActive {
+            return filteredData.count
+        }
         return noteManager.notesCount
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let note = noteManager.note(at: indexPath.row)
+        var note = noteManager.note(at: indexPath.row)
+        if searchController.isActive {
+            note = filteredData[indexPath.row]
+        }
         cell.textLabel?.text = note.text
         
         return cell
@@ -62,6 +84,15 @@ class ViewController: UITableViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         noteManager = NoteManager()
+        tableView.reloadData()
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        filteredData.removeAll()
+        guard let filterWord = searchController.searchBar.text else { return }
+        print(filterWord)
+        filteredData = noteManager.notes.filter({$0.text.lowercased().contains(filterWord)})
+        //TODO create filter! this one is bug
         tableView.reloadData()
     }
 

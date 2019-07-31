@@ -17,7 +17,6 @@ class NoteManager {
             let jsonDecoder = JSONDecoder()
             do {
                 self.notes = try jsonDecoder.decode([Note].self, from: savedNotes)
-                print("success load notes = \(notes.count)")
             } catch {
                 print("Failed load note")
             }
