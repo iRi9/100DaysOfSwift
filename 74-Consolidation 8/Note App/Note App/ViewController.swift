@@ -14,13 +14,13 @@ class ViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("did load")
         
         title = "Note"
         navigationController?.navigationBar.prefersLargeTitles = true
+        
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let compose = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(composeNote))
-        
+
         toolbarItems = [spacer, compose]
         navigationController?.isToolbarHidden = false
         
@@ -40,7 +40,13 @@ class ViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         showComposeVC(indexPath.row)
-        
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            noteManager.delete(at: indexPath.row)
+            tableView.reloadData()
+        }
     }
     
     @objc func composeNote() {
@@ -54,6 +60,10 @@ class ViewController: UITableViewController {
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        noteManager = NoteManager()
+        tableView.reloadData()
+    }
 
 }
 

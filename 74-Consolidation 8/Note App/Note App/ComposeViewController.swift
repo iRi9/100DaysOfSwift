@@ -13,20 +13,27 @@ class ComposeViewController: UIViewController {
     @IBOutlet var composeTextView: UITextView!
     
     private var noteManager = NoteManager()
+    private var isNewNote = false
+    private var noteId = ""
+    private var noteIndex = 0
+    
     var index: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.largeTitleDisplayMode = .never
         
-        guard let index = index else { return }
-        
-//        if noteManager.note(at: index) {
-//            let note = noteManager.note(at: index)
-//            composeTextView.text = note.text
-//        } else {
+        if let index = index {
+            if index > -1 {
+                let note = noteManager.note(at: index)
+                noteId = note.id
+                noteIndex = index
+                composeTextView.text = note.text
+            }
+        } else {
             composeTextView.text = ""
-//        }
+            isNewNote = true
+        }
         
         let doneBarItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
         let shareBarItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(share))
@@ -58,11 +65,35 @@ class ComposeViewController: UIViewController {
     }
     
     @objc func done() {
-        
+        view.endEditing(true)
     }
     
     @objc func share() {
+        var shareNote = ""
+        if isNewNote {
+            shareNote = composeTextView.text
+        } else {
+            shareNote = noteManager.note(at: noteIndex).text
+        }
+        let vc = UIActivityViewController(activityItems: [shareNote], applicationActivities: [])
+        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         
+        present(vc,animated: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        guard !composeTextView.text.isEmpty else { return }
+        
+        let note = Note(id: noteId.isEmpty ? UUID.init().uuidString : noteId, text: composeTextView.text)
+        
+        if isNewNote {
+            noteManager.add(note: note, at: 0)
+        } else {
+            var editedNote = noteManager.notes.filter({$0.id == noteId}).map({ return $0})
+            editedNote[0].text = composeTextView.text
+            noteManager.edit(note: note, at: noteIndex)
+        }
+
     }
 
 }

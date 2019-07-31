@@ -9,5 +9,6 @@
 import Foundation
 
 struct Note: Codable {
+    var id: String
     var text: String
 }
