@@ -21,9 +21,33 @@ class DetailViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
 
-        // Do any additional setup after loading the view.
         if let imageToLoad = selectedImage {
-            imageView.image = UIImage(named: imageToLoad)
+//            imageView.image = UIImage(named: imageToLoad)
+            
+            let imageSize = imageView.frame.size
+            let renderer = UIGraphicsImageRenderer(size: CGSize(width: imageSize.width, height: imageSize.height))
+            
+            let caption = renderer.image { ctx in
+                
+                let mImage = UIImage(named: imageToLoad)
+                mImage?.draw(at: CGPoint(x: 0, y: 0))
+                
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.alignment = .center
+                
+                let attrs: [NSAttributedString.Key: Any] = [
+                    .font: UIFont.systemFont(ofSize: 24),
+                    .paragraphStyle: paragraphStyle
+                ]
+                
+                let string = "From Storm Viewer"
+                let attributedString = NSAttributedString(string: string, attributes: attrs)
+                
+                attributedString.draw(with: CGRect(x: 50, y: 70, width: 448, height: 448), options: .usesLineFragmentOrigin, context: nil)
+                
+            }
+            
+            imageView.image = caption
         }
     }
 
